@@ -69,7 +69,7 @@ header{
 .details-container{
   background-color: white;
   width: 86%;
-  height: 86vw;
+  height: 30vh;
   position: absolute;
   top: 20%;
   border-radius: 15px;
@@ -94,7 +94,7 @@ header{
   font-weight: 600;
 }
 .detail{
-  font-size: 4vmin;
+  font-size: calc(26px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
   font-weight: 500;
 }
 #map{
@@ -129,7 +129,7 @@ header{
   }
   .detail{
     width: 80% !important;
-    font-size: 3vmin;
+    font-size: calc(14px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
     margin-left: 10%;
     
   }

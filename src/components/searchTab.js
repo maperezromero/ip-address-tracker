@@ -5,7 +5,9 @@ import { valuesContext } from '../App';
 
 
 export const SearchTab = ()=>{
-    //https://geo.ipify.org/api/v2/country,city?apiKey=at_qPZvq5WGXhqlvyorYdQiBCyCgc23U&ipAddress=8.8.8.8
+
+    
+
     const {setValues} = useContext(valuesContext)
     const handleSearch = async () =>{
         const ip = document.getElementsByClassName('input-direction')[0].value;  
@@ -19,11 +21,10 @@ export const SearchTab = ()=>{
                     lat: `${response.data.location.lat}`,
                     lng: `${response.data.location.lng}`
                 })
-                console.log(response);
+                //console.log(response);
             } catch (error) {
                 console.log(error);
             }
-        // console.log(selector.value);
     }
     return(
         <div className="search-tab">

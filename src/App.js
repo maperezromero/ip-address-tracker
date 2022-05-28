@@ -6,6 +6,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import markerIcon from "leaflet/dist/images/marker-icon.png"
 import {Icon} from 'leaflet'
 import { createContext, useEffect, useState } from 'react';
+import axios from 'axios';
 
 export const valuesContext = createContext(null);
 
@@ -15,10 +16,55 @@ function App() {
     location: '',
     timezone: '',
     isp: '',
-    lat: '47.557545017796684',
-    lng: '10.749821856577201'
+    lat: '',
+    lng: '',
+    ipRead: false
   })
-  
+  useEffect(()=>{
+
+    if(!values.ipRead){
+      //setValues({...values, ipRead: true})
+      const handleSearch = async () =>{
+        const http = require('http');
+        let yourIP='';
+        //const ip = document.getElementsByClassName('input-direction')[0].value;  
+        try {
+          http.get({'host': 'api.ipify.org', 'port': 80, 'path': '/'}, function(resp) {
+            resp.on('data', function(ip) {
+              setValues({...values, ip: ip})
+              //console.log("My public IP address is: " + ip);
+              //console.log(values.ip);
+              //********** */
+            });
+          });
+          
+        } catch (error) {
+          console.log(error);
+        }
+        
+        try {
+            console.log(values.ip);
+            const response = await axios.get(`https://geo.ipify.org/api/v2/country,city?apiKey=at_qPZvq5WGXhqlvyorYdQiBCyCgc23U&ipAddress=${yourIP}`)
+            //console.log(response);
+            setValues({
+                ip: response.data.ip,
+                location: `${response.data.location.city}, ${response.data.location.region} ${response.data.location.postalCode} `,
+                timezone: `UTC ${response.data.location.timezone}`,
+                isp: `${response.data.isp}`,
+                lat: `${response.data.location.lat}`,
+                lng: `${response.data.location.lng}`,
+                ipRead: true,
+            })
+            //console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+        
+      }
+      handleSearch();
+    }
+  },[])
+
   function MyRendering(){
     const map = useMap()
     map.flyTo([values.lat,values.lng], map.getZoom())
@@ -29,13 +75,6 @@ function App() {
     )
   }
 
-
-  useEffect(() => {
-    console.log(values);
-    return () => {
-      
-    }
-  },[values])
 
 
   return (
